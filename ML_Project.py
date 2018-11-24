@@ -4,14 +4,17 @@ import argparse
 import sys
 
 
-def main(training_file):
-	dataset = np.loadtxt(training_file, delimiter = " ")
+def main(training_file, test_file):
+	train_set = np.loadtxt(training_file, delimiter = " ")
+	test_set = np.loadtxt(test_file, delimiter= " ")
 
-	X_train = dataset[:,:-1]
-	#X = dataset[:][:-1]
-	Y_train = dataset[:,-1]
+	X_train = train_set[: , :-1]
+	Y_train = train_set[: , -1]
 
-	RF_acc = rand_forest_classifier(X_train, Y_train, X_train, Y_train)
+	X_test = test_set[: , :-1]
+	Y_test = test_set[: , -1]
+
+	RF_acc = rand_forest_classifier(X_train, Y_train, X_test, Y_test)
 
 	print('accuracy of Random Forest: {:.2%}'.format(RF_acc))
 
@@ -32,6 +35,7 @@ def rand_forest_classifier(X_train, Y_train, X_test, Y_test):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('training_file')
+	parser.add_argument('test_file')
 
 	parsed = parser.parse_args(sys.argv[1:])
-	main(parsed.training_file)
+	main(parsed.training_file, parsed.test_file)

@@ -12,7 +12,7 @@
     <Name>ML_Project</Name>
     <RootNamespace>ML_Project</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>./TrainingFiles/train.nmv0.txt</CommandLineArguments>
+    <CommandLineArguments>./TrainingFiles/train.nmv0.txt ./TrainingFiles/train.nmv1.txt</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,8 +27,8 @@
     <Compile Include="ML_Project.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Evaluation Files\prelim-mv-noclass.txt" />
-    <Content Include="Evaluation Files\prelim-nmv-noclass.txt" />
+    <Content Include="EvaluationFiles\prelim-mv-noclass.txt" />
+    <Content Include="EvaluationFiles\prelim-nmv-noclass.txt" />
     <Content Include="TrainingFiles\train.mv0.txt" />
     <Content Include="TrainingFiles\train.mv1.txt" />
     <Content Include="TrainingFiles\train.mv2.txt" />
@@ -41,7 +41,7 @@
     <Content Include="TrainingFiles\train.nmv4.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Evaluation Files\" />
+    <Folder Include="EvaluationFiles\" />
     <Folder Include="TrainingFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
