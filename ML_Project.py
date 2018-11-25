@@ -9,20 +9,6 @@ from sklearn.model_selection import KFold
 def main(path_to_files, type_of_files):
 	#read in the training and test data
 	#setting dtype to none captures the actual class of the data
-	'''
-	train_set = np.genfromtxt(training_file, delimiter = " ", dtype=None)
-	test_set = np.genfromtxt(test_file, delimiter= " ", dtype=None)
-
-	train_set = pd.DataFrame(train_set)
-	test_set = pd.DataFrame(test_set)
-
-	X_train = train_set.iloc[:, :-1]
-	Y_train = train_set.iloc[:, -1]
-
-	X_test = test_set.iloc[:, :-1]
-	Y_test = test_set.iloc[:, -1]
-	'''
-
 	data = read_in_data(path_to_files, type_of_files)
 
 	kf = KFold(n_splits=5)
@@ -36,12 +22,9 @@ def main(path_to_files, type_of_files):
 
 		LR_acc = logistic_regression(X_train, Y_train, X_test, Y_test)
 
-		#SVC_acc = svc_learner(X_train, Y_train, X_test, Y_test)
-
 		print_accuracy('Random Forrest', RF_acc)
 		print_accuracy('Bernoulli Naive Bayes', BNB_acc)
 		print_accuracy('Logistic Regression', LR_acc)
-		#print_accuracy('SVC', SVC_acc)
 
 def rand_forest_classifier(X_train, Y_train, X_test, Y_test):
 	'''
@@ -84,19 +67,6 @@ def logistic_regression(X_train, Y_train, X_test, Y_test):
 	LR_acc = np.mean(LR_pred == Y_test)
 	
 	return LR_acc
-
-def svc_learner(X_train, Y_train, X_test, Y_test):
-	'''
-	train a svm, and test its accuracy on some given data
-	'''
-	from sklearn import svm
-	classifier = svm.SVC(kernel='linear')
-	classifier.fit(X_train, Y_train)
-
-	SVM_pred = classifier.predict(X_test)
-	SVM_acc = np.mean(SVM_pred == Y_test)
-	
-	return SVM_acc
 
 def print_accuracy(test_name, acc):
 	print('accuracy of {}: {:.2%}'.format(test_name, acc))
