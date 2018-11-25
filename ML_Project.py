@@ -13,29 +13,67 @@ def main(path_to_files, type_of_files, classifier):
 
 	kf = KFold(n_splits=5)
 	split_n = 1
+	best_accuracy = 0
+	best_classifier = None
 	for train_index, test_index in kf.split(data):
 		X_train, X_test = data.iloc[train_index].iloc[:, :-1], data.iloc[test_index].iloc[:, :-1]
 		Y_train, Y_test = data.iloc[train_index].iloc[:, -1], data.iloc[test_index].iloc[:, -1]
 
+		'''
+		an attempt at feature selection it is currently incomplete
+		from sklearn.ensemble import ExtraTreesClassifier
+		from sklearn.feature_selection import SelectFromModel
+
+		clf = ExtraTreesClassifier(n_estimators=50)
+		clf = clf.fit(X_train, Y_train)
+
+		model = SelectFromModel(clf, prefit=True)
+		X_train = model.transform(X_train)
+		X_test = model.transform(X_test)
+		''' 
+
 		print('split number', split_n)
 		if classifier == 'Random Forest':
-			RF_acc = rand_forest_classifier(X_train, Y_train, X_test, Y_test)
+			RF_acc, cf = rand_forest_classifier(X_train, Y_train, X_test, Y_test)
 			print_accuracy('Random Forrest', RF_acc)
+			if RF_acc > best_accuracy:
+				best_accuracy = RF_acc
+				best_classifier = cf
 		elif classifier == 'Bernoulli Naive Bayes':
-			BNB_acc = bernoulli_naive_bayes(X_train, Y_train, X_test, Y_test)
+			BNB_acc, cf = bernoulli_naive_bayes(X_train, Y_train, X_test, Y_test)
 			print_accuracy('Bernoulli Naive Bayes', BNB_acc)
+			if BNB_acc > best_accuracy:
+				best_accuracy = BNB_acc
+				best_classifier = cf
 		elif classifier == 'Multinomial Naive Bayes':
-			MNB_acc = multinomial_naive_bayes(X_train, Y_train, X_test, Y_test)
+			MNB_acc, cf = multinomial_naive_bayes(X_train, Y_train, X_test, Y_test)
 			print_accuracy('Multinomial Naive Bayes', MNB_acc)
+			if MNB_acc > best_accuracy:
+				best_accuracy = MNB_acc
+				best_classifier = cf
 		elif classifier == 'Logistic Reggression':
-			LR_acc = logistic_regression(X_train, Y_train, X_test, Y_test)
+			LR_acc, cf = logistic_regression(X_train, Y_train, X_test, Y_test)
 			print_accuracy('Logistic Regression', LR_acc)
+			if LR_acc > best_accuracy:
+				best_accuracy = LR_acc
+				best_classifier = cf
 		else:
-			MLP_acc = mlp_classifier(X_train, Y_train, X_test, Y_test)
+			MLP_acc, cf = mlp_classifier(X_train, Y_train, X_test, Y_test)
 			print_accuracy('Neural Nets', MLP_acc)
+			if MLP_acc > best_accuracy:
+				best_accuracy = MLP_acc
+				best_classifier = cf
 		
 		print()	#newline
 		split_n += 1
+
+	evalData = read_in_data('./EvaluationFiles', 'nmv')
+	X_eval = evalData.iloc[: , :-1]
+	Y_eval = best_classifier.predict(X_eval)
+
+	with open(os.path.join('./PredictionFile.txt'), 'w') as f:
+		for Y in Y_eval:
+			f.write('{}\n'.format(Y))
 
 def mlp_classifier(X_train, Y_train, X_test, Y_test):
 	'''
@@ -49,7 +87,7 @@ def mlp_classifier(X_train, Y_train, X_test, Y_test):
 	MLP_pred = classifier.predict(X_test)
 	MLP_acc = np.mean(MLP_pred == Y_test)
 	
-	return MLP_acc		
+	return MLP_acc, classifier		
 
 def rand_forest_classifier(X_train, Y_train, X_test, Y_test):
 	'''
@@ -63,7 +101,7 @@ def rand_forest_classifier(X_train, Y_train, X_test, Y_test):
 	RF_pred = classifier.predict(X_test)
 	RF_acc = np.mean(RF_pred == Y_test)
 	
-	return RF_acc
+	return RF_acc, classifier
 
 def bernoulli_naive_bayes(X_train, Y_train, X_test, Y_test):
 	'''
@@ -77,7 +115,7 @@ def bernoulli_naive_bayes(X_train, Y_train, X_test, Y_test):
 	BNB_pred = naive_bayes.predict(X_test)
 	BNB_acc = np.mean(BNB_pred == Y_test)
 	
-	return BNB_acc
+	return BNB_acc, naive_bayes
 
 def multinomial_naive_bayes(X_train, Y_train, X_test, Y_test):
 	'''
@@ -91,7 +129,7 @@ def multinomial_naive_bayes(X_train, Y_train, X_test, Y_test):
 	MNB_pred = naive_bayes.predict(X_test)
 	MNB_acc = np.mean(MNB_pred == Y_test)
 	
-	return MNB_acc
+	return MNB_acc, naive_bayes
 
 def logistic_regression(X_train, Y_train, X_test, Y_test):
 	'''
@@ -105,7 +143,7 @@ def logistic_regression(X_train, Y_train, X_test, Y_test):
 	LR_pred = classifier.predict(X_test)
 	LR_acc = np.mean(LR_pred == Y_test)
 	
-	return LR_acc
+	return LR_acc, classifier
 
 def print_accuracy(test_name, acc):
 	print('accuracy of {}: {:.2%}'.format(test_name, acc))
