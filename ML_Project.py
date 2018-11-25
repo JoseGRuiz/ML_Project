@@ -36,12 +36,30 @@ def main(path_to_files, type_of_files):
 
 		LR_acc = logistic_regression(X_train, Y_train, X_test, Y_test)
 
+		MLP_acc = mlp_classifier(X_train, Y_train, X_test, Y_test)
+
 		#SVC_acc = svc_learner(X_train, Y_train, X_test, Y_test)
 
 		print_accuracy('Random Forrest', RF_acc)
 		print_accuracy('Bernoulli Naive Bayes', BNB_acc)
 		print_accuracy('Logistic Regression', LR_acc)
+		print_accuracy('MLP Classifier', MLP_acc)
 		#print_accuracy('SVC', SVC_acc)
+
+
+def mlp_classifier(X_train, Y_train, X_test, Y_test):
+	'''
+	train a random forest classifier and test its accuracy on 
+	some given test data
+	'''
+	from sklearn.neural_network import MLPClassifier
+	classifier = MLPClassifier(hidden_layer_sizes=(205,180, 180), random_state = 2, learning_rate='invscaling')
+	classifier.fit(X_train, Y_train)
+
+	MLP_pred = classifier.predict(X_test)
+	MLP_acc = np.mean(MLP_pred == Y_test)
+	
+	return MLP_acc		
 
 def rand_forest_classifier(X_train, Y_train, X_test, Y_test):
 	'''
