@@ -22,15 +22,9 @@ def main(path_to_files, type_of_files):
 
 		LR_acc = logistic_regression(X_train, Y_train, X_test, Y_test)
 
-		MLP_acc = mlp_classifier(X_train, Y_train, X_test, Y_test)
-
-		#SVC_acc = svc_learner(X_train, Y_train, X_test, Y_test)
-
 		print_accuracy('Random Forrest', RF_acc)
 		print_accuracy('Bernoulli Naive Bayes', BNB_acc)
 		print_accuracy('Logistic Regression', LR_acc)
-		print_accuracy('MLP Classifier', MLP_acc)
-		#print_accuracy('SVC', SVC_acc)
 
 
 def mlp_classifier(X_train, Y_train, X_test, Y_test):
