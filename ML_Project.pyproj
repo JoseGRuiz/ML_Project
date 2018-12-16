@@ -12,7 +12,7 @@
     <Name>ML_Project</Name>
     <RootNamespace>ML_Project</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>./TrainingFiles -tof=nmv</CommandLineArguments>
+    <CommandLineArguments>./TrainingFiles ./FinalEvaluation 10 -tof=nmv </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -30,11 +30,11 @@
   <ItemGroup>
     <Content Include="EvaluationFiles\prelim-mv-noclass.txt" />
     <Content Include="EvaluationFiles\prelim-nmv-noclass.txt" />
-    <Content Include="TrainingFiles\train.mv0.txt" />
-    <Content Include="TrainingFiles\train.mv1.txt" />
-    <Content Include="TrainingFiles\train.mv2.txt" />
-    <Content Include="TrainingFiles\train.mv3.txt" />
-    <Content Include="TrainingFiles\train.mv4.txt" />
+    <Content Include="TrainingFiles\train.ymv0.txt" />
+    <Content Include="TrainingFiles\train.ymv1.txt" />
+    <Content Include="TrainingFiles\train.ymv2.txt" />
+    <Content Include="TrainingFiles\train.ymv3.txt" />
+    <Content Include="TrainingFiles\train.ymv4.txt" />
     <Content Include="TrainingFiles\train.nmv0.txt" />
     <Content Include="TrainingFiles\train.nmv1.txt" />
     <Content Include="TrainingFiles\train.nmv2.txt" />
